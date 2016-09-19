@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_th_ac_sut_pizza_domain_PizzaOrder" modelAttribute="pizzaOrder" path="/pizzaorders" render="${empty dependencies}" z="Q42GTjuVtY83fYzFw0FfX/OZWYo=">
+        <field:input field="name" id="c_th_ac_sut_pizza_domain_PizzaOrder_name" min="2" required="true" z="c9Hav5Del/8KcxWhgnITfhOoYfk="/>
+        <field:input field="address" id="c_th_ac_sut_pizza_domain_PizzaOrder_address" max="30" z="aCHIBIT/AmpeaWXhB2SPiX9yruQ="/>
+        <field:input field="total" id="c_th_ac_sut_pizza_domain_PizzaOrder_total" validationMessageCode="field_invalid_number" z="ohi07xMBhpsMQg0hXm0tEuqG89U="/>
+        <field:datetime dateTimePattern="${pizzaOrder_deliverydate_date_format}" field="deliveryDate" id="c_th_ac_sut_pizza_domain_PizzaOrder_deliveryDate" z="SG7OkAFpG8kxowQYwpbbNiLHvks="/>
+
+        <table>
+            <legend>Find Pizza</legend>
+            <tr>
+                <td width="50%"><input id="inputFindPizza"/></td>
+                <td>
+                    <select id="pizzaItems" type="text"></select>
+                    <input id="pizzaSelected" type="hidden" name="pizzas" value="0"/>
+            </td>
+            </tr>
+        </table>
+    </form:create>
+    <!-- <form:dependency dependencies="${dependencies}" id="d_th_ac_sut_pizza_domain_PizzaOrder" render="${not empty dependencies}" z="BCFBE8PRFY9k5OO90X6JB2bKJ8g="/> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" type="text/javascript"><jsp:text> </jsp:text>
+    </script>
+    <script language="JavaScript" type="text/javascript">
+    $(document).ready(function(){
+            //check pizza name input.
+            $('#inputFindPizza').keyup(function() {
+            var pizzaName = $(this).val();
+            $.ajax({
+                url: "pizzaorders/find_pizza",
+                type: "GET",
+                data: {
+                    pizza: pizzaName
+                },
+                statusCode: {
+                    200: function(data) {
+                        var obj = JSON.parse(data);
+                        $('#pizzaItems').empty();
+                        $.each(obj,function(i){
+                           $('#pizzaItems')[0].appendChild(new Option(obj[i].name,obj[i].id));
+                           if(i==1){
+                                $('#pizzaItems')[0].val(obj[i].id)
+                           }
+                        })
+                    }
+                }
+            });
+            $('#pizzaSelected').val($("#pizzaItems option:selected").val())
+
+    });
+            //check selected value
+            $('#pizzaItems').on('change', function () {
+                $('#pizzaSelected').val($(this).val())
+            });
+    });
+    </script>
+</div>
