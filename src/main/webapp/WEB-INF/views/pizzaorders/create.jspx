@@ -41,7 +41,7 @@
                         $.each(obj,function(i){
                            $('#pizzaItems')[0].appendChild(new Option(obj[i].name,obj[i].id));
                            if(i==0){
-                                $('#pizzaItems')[0].val(obj[i].id)
+                                $('#pizzaItems').val(obj[i].id)
                            }
                         })
                     }
